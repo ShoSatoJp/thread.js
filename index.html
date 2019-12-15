@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Thread.js Sample</title>
+    <script src="clone.js/clone.js"></script>
+    <script src="thread.js"></script>
+    <script src="timer.js"></script>
+</head>
+
+<body>
+    <h1></h1>
+    <script>
+        function prime(n) {
+            var ps, x, flg, j;
+            ps = [2, 3];
+            for (x = 5; x < n; x += 2) {
+                flg = 0;
+                for (j = 0; ps[j] * ps[j] <= x; j++) {
+                    if (x % ps[j] == 0) {
+                        flg = 1;
+                        break;
+                    }
+                }
+                if (flg == 0) {
+                    ps.push(x);
+                }
+            }
+            return ps;
+        }
+        function out(msg) {
+            const e = document.createElement('h1');
+            e.textContent = msg;
+            document.body.appendChild(e);
+            console.log(msg);
+        }
+        out('thread name, elapsed time from now');
+        var start = Date.now();
+        prime(30000000);
+        const time = Date.now() - start;
+        out(`main thread ${time}`);
+
+        const t1 = new Thread(async () => {
+            prime(30000000);
+            const time = Date.now() - start;
+            await invoke(function () {
+                out(`worker thread 1 ${time}`);
+            }, { time });
+        }, { prime, start });
+        t1.execute();
+        const t2 = new Thread(async () => {
+            prime(30000000);
+            const time = Date.now() - start;
+            await invoke(function () {
+                out(`worker thread 2 ${time}`);
+            }, { time });
+        }, { prime, start });
+        t2.execute();
+    </script>
+</body>
+
+</html>

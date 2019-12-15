@@ -1,0 +1,3 @@
+[submodule "clone.js"]
+	path = clone.js
+	url = https://github.com/shosatojp/clone.js.git
