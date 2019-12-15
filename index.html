@@ -37,7 +37,10 @@
             document.body.appendChild(e);
             console.log(msg);
         }
+
         out('thread name, elapsed time from now');
+        out('generate primes under 30000000 in each threads');
+
         var start = Date.now();
         prime(30000000);
         const time = Date.now() - start;
@@ -51,6 +54,7 @@
             }, { time });
         }, { prime, start });
         t1.execute();
+
         const t2 = new Thread(async () => {
             prime(30000000);
             const time = Date.now() - start;
